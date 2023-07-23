@@ -52,10 +52,10 @@
 
 ẋ(t) - Derivative of state vector <br>
 _θ_ - Lean angle of the pendulum (rads) <br>
-_θ_<sup>.</sup> - Angular velocity (rad/s) <br>
-_θ_<sup>..</sup> -  Angular acceleration (rad/s<sup>2</sup>) <br>
+_θ_ <sup>.</sup> - Angular velocity (rad/s) <br>
+_θ_ <sup>..</sup> -  Angular acceleration (rad/s<sup>2</sup>) <br>
 ω - Rotational speed of the inertia wheel (rad/s) <br>
-Omega dot - Rotational acceleration of the inertia wheel (rad/s<sup>2</sup>) <br>
+ω <sup>.</sup> - Rotational acceleration of the inertia wheel (rad/s<sup>2</sup>) <br>
 m<sub>r</sub> - Mass of pendulum rod (kg) <br>
 m<sub>w</sub> - Mass of inertia wheel (kg) <br>
 _l_<sub>AB</sub> - Distance from ground to the center of mass of the pendulum rod (m) <br>
