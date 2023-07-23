@@ -146,6 +146,7 @@ _l_<sub>AD</sub> - Length of the pendulum rod (m) <br>
 <p align="center">Figure 14 Digital controller</p>
 
 **_Step 11:_** The PID controller is tuned to balance the motorcycle even when it moves.
+
 **_Step 12:_** The Digital Controller block has safety logic that checks the IMU calibration status, battery level, and standing or falling state of the motorcycle. If any of the above conditions fail, then the controller turns off.
 
 <p align="center">
