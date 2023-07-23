@@ -50,6 +50,7 @@
 <p align="center">Figure 3 SpeechVive</p>
 
 '''
+
 ẋ(t) - Derivative of state vector
 θ - Lean angle of the pendulum (rads)
 Theta dot - Angular velocity (rad/s)
@@ -68,159 +69,32 @@ l<sub>AD</sub> - Length of the pendulum rod (m)
 #### Steps:
 1. Using the state vector derivative, the inverted pendulum model is developed with Simulink, as shown below in Figure . Initially, when no motor torque is applied, the pendulum oscillates freely, as seen in Figure . When motor torque is applied, which is provided as feedback of the pendulum angle, the pendulum oscillates in the upright position, as depicted in Figures x and y, respectively.
 2. A PID controller is added to further increase the stability of the inverted pendulum and maintain a zero degree lean angle. The simulink model with PID controller and the output of the model is shown in figures and, respectively.
+3. The motorcycle is assembled, and each of the above-mentioned sensors is tested by developing models with Simulink for each sensor, and the models are run in External mode.
+4. First, the IMU is tested by running the model in External mode. Simulink has a prebuilt function block for the BNO055 IMU sensor that shows the angular rate, euler angles, and calibration status of the sensor, as seen in Figure . The sensor has to be calibrated every time the controller is powered on.
+5. The inertia wheel motor rotation is calculated using the Encoder block. A filtered derivative is used to obtain rotations per second and also to filter the signal. The image below shows the Simulink model.
+6. The DC motors can be controlled with the DC Motors block, as shown below. A constant value between 0 and 1 is passed as input. A gain block with a value of 255 is added before sending the input to the DC Motors block.
+7. The battery voltage can be measured with the Battery Read block, as shown below.
+8. To control the servo motor for steering, the Servo Write block is used as shown in Figure
+9. Once all the sensors and actuators are tested, all the models are combined into a subsystem.
+10. The sensor data from the subsystem is fed into the PID controller, which gives a signal to rotate the inertia wheel motor for balancing the motorcycle.
+11. The PID controller is tuned to balance the motorcycle even when it moves.
+12. The Digital Controller block has safety logic that checks the IMU calibration status, battery level, and standing or falling state of the motorcycle. If any of the above conditions fail, then the controller turns off.
+13. The rear motor speed is increased slowly using a slider to move the motorcycle.
+14. Then the steering angle of the motorcycle is slightly changed, and the rear motor speed is slowly increased to make the motorcycle move in a circular path.
 
-
-### 7. Implementation:
+### 6. Problems and Troubleshooting:
 #### Circuit Diagram:
-<p align="center">
-<img src="images/circuit_diagram.jpg" height="100%" width="100%">
-</p>
-<p align="center">Figure 5 Circuit diagram</p>
+- Tuning the PID was hard and time consuming. To make the tuning easier, the controller is tuned in the following sequence: P, D, and I. 
+- Even a fairly large value of I leads to integral winding and makes the inertia motor speed increase continuously, making the motorcycle unstable. To overcome this problem, the I value is set to the minimum possible value.
+- For the same bias value used for straight line motion, the motorcycle was unstable for circular motion as it leaned slightly after changing the steering angle. The bias value has been tuned again for circular motion.
++ A 3.7 V battery is used to power the motorcycle. Even with a small drop in voltage, the tuned PID values cannot stabilize the robot. The Battery voltage has to be checked and should be above 3.4 V for the motorcycle to stabilize.
++ Higher rear motor speeds provide vibrations that make the motorcycle fall. The rear motor is increased only up to a level where the vibrations are well contained
 
-- The circuit diagram above shows the components used in the device.An adjustable-gain microphone is used as 
-a user microphone. The gain of the user microphone is optimized so that it will only capture the user's voice 
-and eliminate ambient noise.
-+ Though the gain is optimized, the user's microphone will capture some background noise, but it is negligible.
-A bone conduction microphone with better sensitivity can help overcome this problem. The bone conduction microphone
-can be placed on top of the collarbone, where the sensitivity is better.
-* An Auto-gain microphone is used as an ambient microphone. The gain of this microphone adjusts automatically and
-is directly proportional to the distance of the sound source. Hence, this microphone is effective at capturing
-background noise that is far away.
-- Buttons are provided to adjust the intensity of the vibration motor.
+### 7. Results and Conclusion:
+- The kinetics of the motorcycle were studied and modeled successfully with Simulink.
+- The motorcycle can move in a straight path and circular path on smooth surfaces.
++ To move the robot in a circular path, the bias value in the controller is tuned, but this can be avoided by dynamic biasing, which uses steering angle to compute the bias value.
 
-#### Working:
-<p align="center">
-<img src="images/overall_sequence_flow_diagram.jpg" height="110%" width="110%">
-</p>
-<p align="center">Figure 6 Overall sequence flow diagram</p>
-
-- Once the device is turned on, the ambient mic will capture background noise. When the user starts speaking,
-the captured background noise is used for comparison with the user’s voice level and provides feedback. The
-sequence flow diagram above illustrates the feedback logic of the device.
-+ The logic has three different states: high, normal, and low for the user’s voice level, and two discrete
-states: noise and no noise for background noise.
-* When the user speaks at a low volume, irrespective of ambient noise, continuous vibrotactile feedback will
-be generated.
-+ When there is no background noise and the user converses in a normal voice, no feedback is provided. But if
-the user is conversing in a normal voice in the presence of background noise, continuous feedback will be provided.
-- If the user speaks at a high volume in the absence of ambient sound, intermittent vibrotactile feedback will be
-provided, prompting the user to reduce their volume. But if ambient noise is present and the user speaks at a high
-volume, feedback is not provided.
-
-<p align="center">
-<img src="images/detailed_sequence_flow_diagram.JPG" height="110%" width="110%">
-</p>
-<p align="center">Figure 7 Detailed sequence flow diagram</p>
-
-#### Microphone Signal Filtering:
-Signals from both user and ambient microphones are filtered using first-order low-pass filters to remove noise 
-and avoid sudden spikes that could affect the feedback of the device.
-<p align="center">
-<img src="images/user_mic_raw_and_filtered_data.jpg" height="110%" width="110%">
-</p>
-<p align="center">Figure 8 Raw and filtered user microphone signals</p>
-
-<p align="center">
-<img src="images/ambient_mic_raw_and_filtered_data.jpg" height="110%" width="110%">
-</p>
-<p align="center">Figure 9 Raw and filtered ambient microphone signals</p>
-
-#### Component Housing:
-<p align="center">
-<img src="images/component_housing.jpg" height="50%" width="50%">
-</p>
-<p align="center">Figure 10 Component housing</p>
-
-As shown in the figure above, all the components are placed inside 3D printed boxes.
-<p align="center">
-<img src="images/shoulder_brace.jpg" height="40%" width="40%">
-</p>
-<p align="center">Figure 11 Shoulder brace</p>
-
-- The shoulder brace shown above is modified to incorporate the device onto the interior surface of the
-brace, ensuring that it remains hidden from view. Additionally, the device is removable, allowing users
-to detach it during washing, and the shoulder brace is lightweight and flexible to make the user comfortable.
-+ The box containing the vibration motor, Battery Management System, ambient microphone, and controller will
-be placed inside the shoulder brace, and the brace can be worn on either shoulder.
-* The user's microphone placed on top of the collarbone will pick up the user's vocal intensity.
-+ Signals from both microphones are filtered using a low-pass filter to avoid spikes. Both these signals are
-used in determining the user's and ambient sound levels for providing feedback.
-- The intensity of the vibration motor can be adjusted using the buttons provided based on the user’s convenience.
-The device comes with a rechargeable battery and a battery life of 12 hours on a single charge.
-* The primary aim of designing the device is to ensure user-friendliness and accessibility with minimal effort
-and disturbance to the wearer. The shoulder brace is adjustable to accommodate all body types comfortably.
-
-<p align="center">
-<img src="images/shoulder_brace_under_regular_attire.jpg" height="40%" width="40%">
-</p>
-<p align="center">Figure 12 Shoulder brace under regular attire</p>
-
-As shown in the figure above, the shoulder brace is hidden under regular attire.
-
-### 8. Testing and Validation:
-- The device was tested with four people with varying voice levels.
-- The user is asked to position the user microphone at the appropriate position near the face, and the ambient
-microphone is placed on the shoulder. The user is made to speak at three different voice levels: low, medium,
-and high.
--  As said before, all the users have significantly varying voice levels, and the device can provide proper
-feedback to different users with varying voice and ambient sound levels. It showed that the device could
-be used by a wide.
-+ However, tuning the device for each specific user enhances the accuracy of the feedback provided by the device.
-
-### 9. Problems and Troubleshooting:
-- The auto-gain microphone, which is used for capturing background noise, provides negative values for certain
-periods of time when there is a sudden change in the sound level. This has a huge negative impact on feedback.
-To overcome this problem, a counter is added, which makes the controller more stable, but this increases the
-feedback delay to some extent.
-+ Though the gain of the user microphone is set to minimum to capture only the user’s voice, at higher background
-noise levels it captures some of the ambient noise, which affects the feedback. The user's microphone is surrounded
-by a sponge material to reduce the intensity of the noise captured by it.
-* Even if the user speaks in a normal voice, at the start and end of each word, the voice level falls below the
-low band level of the controller. This triggers the controller to provide false feedback. Counters are used to
-overcome this problem, but with a slight increase in feedback delay.
-
-### 10. Results and Conclusion:
-- The device was found to perform with reasonable accuracy and delay for a range of people with varying voice levels.
-- Replacing the electret microphone with a bone conduction microphone for the receiving user’s voice will help in
-avoiding ambient noise.
-+ From the testing, it has been found that tuning the device for each user will improve the accuracy and response
-time of the device.
-* The shoulder is tested with people of varying body sizes and shapes and is found to be comfortable for
-day-to-day activities.
-
-### 11. References:
-1. A. Saika, M. Hussain, A. Barua, And S. Paul, “Smart Healthcare For
-Disease Diagnoses And Prevention”, An Insight Into Parkinson’s
-Disease: Research And Its Complexities, 1st Ed., pp. 59-80, January
-2020.
-2. “Who Has Parkinson’s?” Parkinson’s Foundation, [Online]: Statistics
-| Parkinson's Foundation. [Accessed: 01-Jan-2023].
-3. Parkinson’s Foundation, Speech Therapy and PD [online]:
-https://www.parkinson.org/library/fact-sheets/speech-therapy.
-4. My.Clevelandclinic.Org/Health/Diseases/9392-Speech-Therapy-For-
-Parkinsons-Disease.
-5. Cynthia M. Fox, Lorraine Olson Ramig, “Vocal Sound Pressure Level
-and Self-Perception of Speech and Voice in Men and Women with
-Idiopathic Parkinson Disease”, American Journal of Speech-Language
-Pathology, vol. 6, no. 2, pp. 85-95, May 1997.
-6. Andrew Ma, Kenneth K Lau, Dominic Thyagarajan, “Voice changes
-in Parkinson’s disease: What are they telling us?”, Journal of Clinical
-Neuroscience, vol. 72, pp. 1-7, Feb 2020.
-7. Ramig, L.O., et al., Comparison of two forms of intensive speech treatment for Parkinson disease. Journal of Speech and Hearing Research, 1995. 38: pp. 1232-1251.
-8. DeLetter, M.P., et al., Levodopa-induced alterations in speech rate in
-advanced Parkinson’s disease.Acta NeurologicaBelgica, 2006. 106: pp. 19-22.
-9. Brin, M.F., et al., Dysphonia due to Parkinson's disease, pharmacological, surgical, and behavioral management perspectives, in Vocal rehabilitation for Medical Speech-Language Pathology, By Clinicians, For Clinicians, C.M. Sapienzaand J. Casper, Editors. 2004, Pro-Ed: Austin, TX. pp. 209-269.
-10. Fox, C.M., et al., Current perspectives on the Lee Silverman Voice
-Treatment Program (LSVT®) for individuals with idiopathic Parkinson's
-disease.American Journal of Speech-Language Pathology, 2002. 11: pp. 111-123.
-11. P. B. Shull and D. D. Damian, “Haptic wearables as sensory replacement, sensory augmentation and trainer – A Review,” Journal of NeuroEngineering and Rehabilitation, vol. 12, no. 1, 2015.
-12. M. D. Andreetta, S. G. Adams, A. D. Dykstra, and M. Jog, “Evaluation of Speech Amplification Devices in Parkinson’s Disease,” American Journal of Speech-Language Pathology, vol. 25, no. 1, pp. 29–45, Feb. 2016, doi:
-https://doi.org/10.1044/2015_AJSLP-15-0008.
-13. Thomas Kehoe, “Device for self-monitoring of vocal intensity”, United
-States Patent 0183964, Aug. 17, 2006.
-14. Kehoe Thomas David, “Biofeedback System for Speech Disorders”,
-United States Patent 5794203, Aug. 11, 1998.
-15. https://learn.adafruit.com/adafruit-qt-py-2040/overview.
 
 
 
