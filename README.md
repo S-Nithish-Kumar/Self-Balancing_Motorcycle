@@ -34,9 +34,9 @@
 ### 4. Self-balancing Motorcycle Kinetics:
 
 <p align="center">
-<img src="images/SpeechVive.jpg" height="60%" width="60%">
+<img src="images/rear image.jpeg" height="60%" width="60%">
 </p>
-<p align="center">Figure 3 SpeechVive</p>
+<p align="center">Figure 1 Rear view</p>
 
 - The problem of balancing the motorcycle can be considered a problem of controlling an inverted pendulum. As shown in figure 1, when viewed from the rear, it may look like a pendulum rod with an inertia wheel attached to it.
 - A is the rotation axis of the revolute joint between the pendulum rod and the ground. In this context, rotation axis A, means the axis going through A and perpendicular to the paper plane. lAD is the length of the pendulum rod, i.e., the length of the motorcycle frame.
@@ -45,12 +45,11 @@
 + After a few mathematical derivations, the following state vector derivative is obtained, which can be used for modeling in Simulink.
 
 <p align="center">
-<img src="images/SpeechVive.jpg" height="60%" width="60%">
+<img src="images/state_vector_derivative.jpg" height="60%" width="60%">
 </p>
-<p align="center">Figure 3 SpeechVive</p>
+<p align="center">Figure 2 State vector derivative</p>
 
-'''
-
+```
 ẋ(t) - Derivative of state vector
 θ - Lean angle of the pendulum (rads)
 Theta dot - Angular velocity (rad/s)
@@ -63,27 +62,101 @@ l<sub>AB</sub> - Distance from ground to the center of mass of the pendulum rod 
 l<sub>AC</sub> - Distance from ground to the center of mass of the inertia wheel (m)
 l<sub>AD</sub> - Length of the pendulum rod (m)
 𝜏<sub>m</sub> - Motor torque (Nm)
-'''
+```
 
 ### 5. Implementation:
 #### Steps:
 1. Using the state vector derivative, the inverted pendulum model is developed with Simulink, as shown below in Figure . Initially, when no motor torque is applied, the pendulum oscillates freely, as seen in Figure . When motor torque is applied, which is provided as feedback of the pendulum angle, the pendulum oscillates in the upright position, as depicted in Figures x and y, respectively.
+
+<p align="center">
+<img src="images/kinetics_of_inverted_pendulum_in_simulink.png" height="60%" width="60%">
+</p>
+<p align="center">Figure 3 Kinematics of Inverted Pendulum in Simulink</p>
+
+<p align="center">
+<img src="images/pendulum_output_when_motor_torque_is_zero.png" height="60%" width="60%">
+</p>
+<p align="center">Figure 4 Closed loop motor torque control with lean angle feedback</p>
+
+<p align="center">
+<img src="images/pendulum_output_when_motor_torque_is_provided_a_feedback.png" height="60%" width="60%">
+</p>
+<p align="center">Figure 5 Pendulum output when motor torque is provided a feedback</p>
+
 2. A PID controller is added to further increase the stability of the inverted pendulum and maintain a zero degree lean angle. The simulink model with PID controller and the output of the model is shown in figures and, respectively.
+
+<p align="center">
+<img src="images/torque_control_with _PID _controller.png" height="60%" width="60%">
+</p>
+<p align="center">Figure 6 Torque control with PID controller</p>
+
+<p align="center">
+<img src="images/pendulum_output_with_PID_controller.png" height="60%" width="60%">
+</p>
+<p align="center">Figure 7 Pendulum output with PID controller</p>
+
 3. The motorcycle is assembled, and each of the above-mentioned sensors is tested by developing models with Simulink for each sensor, and the models are run in External mode.
 4. First, the IMU is tested by running the model in External mode. Simulink has a prebuilt function block for the BNO055 IMU sensor that shows the angular rate, euler angles, and calibration status of the sensor, as seen in Figure . The sensor has to be calibrated every time the controller is powered on.
+
+<p align="center">
+<img src="images/IMU_sensor_block.png" height="60%" width="60%">
+</p>
+<p align="center">Figure 8 IMU sensor block</p>
+
 5. The inertia wheel motor rotation is calculated using the Encoder block. A filtered derivative is used to obtain rotations per second and also to filter the signal. The image below shows the Simulink model.
+
+<p align="center">
+<img src="images/simulink_model_to_convert_encoder_values_to_rad_per_sec.png" height="60%" width="60%">
+</p>
+<p align="center">Figure 9 Simulink model to convert encoder values to rad/s</p>
+
 6. The DC motors can be controlled with the DC Motors block, as shown below. A constant value between 0 and 1 is passed as input. A gain block with a value of 255 is added before sending the input to the DC Motors block.
+
+<p align="center">
+<img src="images/M3 _M4_DC_motors_block.png" height="60%" width="60%">
+</p>
+<p align="center">Figure 10 M3 M4 DC Motors block</p>
+
 7. The battery voltage can be measured with the Battery Read block, as shown below.
+
+<p align="center">
+<img src="images/simulink_model_for_reading_battery_voltage.png" height="60%" width="60%">
+</p>
+<p align="center">Figure 11 Simulink model for reading battery voltage</p>
+
 8. To control the servo motor for steering, the Servo Write block is used as shown in Figure
+
+<p align="center">
+<img src="images/servo_write_block.png" height="60%" width="60%">
+</p>
+<p align="center">Figure 12 Servo write block</p>
+
 9. Once all the sensors and actuators are tested, all the models are combined into a subsystem.
+
+<p align="center">
+<img src="images/sensor_signals_combined_to_a_bus_creator_block.png" height="60%" width="60%">
+</p>
+<p align="center">Figure 13 Sensor signals combined to a bus creator block</p>
+
 10. The sensor data from the subsystem is fed into the PID controller, which gives a signal to rotate the inertia wheel motor for balancing the motorcycle.
+
+<p align="center">
+<img src="images/digital_controller.png" height="60%" width="60%">
+</p>
+<p align="center">Figure 14 Digital controller</p>
+
 11. The PID controller is tuned to balance the motorcycle even when it moves.
 12. The Digital Controller block has safety logic that checks the IMU calibration status, battery level, and standing or falling state of the motorcycle. If any of the above conditions fail, then the controller turns off.
+
+<p align="center">
+<img src="images/controller_safety_logic.png" height="60%" width="60%">
+</p>
+<p align="center">Figure 15 Controller safety logic</p>
+
 13. The rear motor speed is increased slowly using a slider to move the motorcycle.
 14. Then the steering angle of the motorcycle is slightly changed, and the rear motor speed is slowly increased to make the motorcycle move in a circular path.
 
 ### 6. Problems and Troubleshooting:
-#### Circuit Diagram:
 - Tuning the PID was hard and time consuming. To make the tuning easier, the controller is tuned in the following sequence: P, D, and I. 
 - Even a fairly large value of I leads to integral winding and makes the inertia motor speed increase continuously, making the motorcycle unstable. To overcome this problem, the I value is set to the minimum possible value.
 - For the same bias value used for straight line motion, the motorcycle was unstable for circular motion as it leaned slightly after changing the steering angle. The bias value has been tuned again for circular motion.
