@@ -34,7 +34,7 @@
 ### 4. Self-balancing Motorcycle Kinetics:
 
 <p align="center">
-<img src="images/rear image.jpeg" height="70%" width="70%">
+<img src="images/rear image.jpeg" height="80%" width="80%">
 </p>
 <p align="center">Figure 1 Rear view</p>
 
@@ -50,18 +50,18 @@
 <p align="center">Figure 2 State vector derivative</p>
 
 <p align="left">
-ẋ(t) - Derivative of state vector
-θ - Lean angle of the pendulum (rads)
-Theta dot - Angular velocity (rad/s)
-Theta dot dot -  Angular acceleration (rad/s2)
-ω - Rotational speed of the inertia wheel (rad/s)
-Omega dot - Rotational acceleration of the inertia wheel (rad/s<sup>2</sup>)
-m<sub>r</sub> - Mass of pendulum rod (kg)
-m<sub>w</sub> - Mass of inertia wheel (kg)
-l<sub>AB</sub> - Distance from ground to the center of mass of the pendulum rod (m)
-l<sub>AC</sub> - Distance from ground to the center of mass of the inertia wheel (m)
-l<sub>AD</sub> - Length of the pendulum rod (m)
-𝜏<sub>m</sub> - Motor torque (Nm)
+ẋ(t) - Derivative of state vector <br>
+θ - Lean angle of the pendulum (rads) <br>
+Theta dot - Angular velocity (rad/s) <br>
+Theta dot dot -  Angular acceleration (rad/s2) <br>
+ω - Rotational speed of the inertia wheel (rad/s) <br>
+Omega dot - Rotational acceleration of the inertia wheel (rad/s<sup>2</sup>) <br>
+m<sub>r</sub> - Mass of pendulum rod (kg) <br>
+m<sub>w</sub> - Mass of inertia wheel (kg) <br>
+l<sub>AB</sub> - Distance from ground to the center of mass of the pendulum rod (m) <br>
+l<sub>AC</sub> - Distance from ground to the center of mass of the inertia wheel (m) <br>
+l<sub>AD</sub> - Length of the pendulum rod (m) <br>
+𝜏<sub>m</sub> - Motor torque (Nm) <br>
 </p>
 
 ### 5. Implementation:
@@ -69,29 +69,29 @@ l<sub>AD</sub> - Length of the pendulum rod (m)
 1. Using the state vector derivative, the inverted pendulum model is developed with Simulink, as shown below in Figure . Initially, when no motor torque is applied, the pendulum oscillates freely, as seen in Figure . When motor torque is applied, which is provided as feedback of the pendulum angle, the pendulum oscillates in the upright position, as depicted in Figures x and y, respectively.
 
 <p align="center">
-<img src="images/kinetics_of_inverted_pendulum_in_simulink.png" height="80%" width="80%">
+<img src="images/kinetics_of_inverted_pendulum_in_simulink.png" height="90%" width="90%">
 </p>
 <p align="center">Figure 3 Kinematics of Inverted Pendulum in Simulink</p>
 
 <p align="center">
-<img src="images/pendulum_output_when_motor_torque_is_zero.png" height="80%" width="80%">
+<img src="images/pendulum_output_when_motor_torque_is_zero.png" height="90%" width="90%">
 </p>
 <p align="center">Figure 4 Closed loop motor torque control with lean angle feedback</p>
 
 <p align="center">
-<img src="images/pendulum_output_when_motor_torque_is_provided_a_feedback.png" height="80%" width="80%">
+<img src="images/pendulum_output_when_motor_torque_is_provided_a_feedback.png" height="90%" width="90%">
 </p>
 <p align="center">Figure 5 Pendulum output when motor torque is provided a feedback</p>
 
 2. A PID controller is added to further increase the stability of the inverted pendulum and maintain a zero degree lean angle. The simulink model with PID controller and the output of the model is shown in figures and, respectively.
 
 <p align="center">
-<img src="images/torque_control_with _PID _controller.png" height="80%" width="80%">
+<img src="images/torque_control_with _PID _controller.png" height="90%" width="90%">
 </p>
 <p align="center">Figure 6 Torque control with PID controller</p>
 
 <p align="center">
-<img src="images/pendulum_output_with_PID_controller.png" height="80%" width="80%">
+<img src="images/pendulum_output_with_PID_controller.png" height="90%" width="90%">
 </p>
 <p align="center">Figure 7 Pendulum output with PID controller</p>
 
@@ -99,21 +99,21 @@ l<sub>AD</sub> - Length of the pendulum rod (m)
 4. First, the IMU is tested by running the model in External mode. Simulink has a prebuilt function block for the BNO055 IMU sensor that shows the angular rate, euler angles, and calibration status of the sensor, as seen in Figure . The sensor has to be calibrated every time the controller is powered on.
 
 <p align="center">
-<img src="images/IMU_sensor_block.png" height="80%" width="80%">
+<img src="images/IMU_sensor_block.png" height="90%" width="90%">
 </p>
 <p align="center">Figure 8 IMU sensor block</p>
 
 5. The inertia wheel motor rotation is calculated using the Encoder block. A filtered derivative is used to obtain rotations per second and also to filter the signal. The image below shows the Simulink model.
 
 <p align="center">
-<img src="images/simulink_model_to_convert_encoder_values_to_rad_per_sec.png" height="80%" width="80%">
+<img src="images/simulink_model_to_convert_encoder_values_to_rad_per_sec.png" height="90%" width="90%">
 </p>
 <p align="center">Figure 9 Simulink model to convert encoder values to rad/s</p>
 
 6. The DC motors can be controlled with the DC Motors block, as shown below. A constant value between 0 and 1 is passed as input. A gain block with a value of 255 is added before sending the input to the DC Motors block.
 
 <p align="center">
-<img src="images/M3 _M4_DC_motors_block.png" height="80%" width="80%">
+<img src="images/M3 _M4_DC_motors_block.png" height="90%" width="90%">
 </p>
 <p align="center">Figure 10 M3 M4 DC Motors block</p>
 
@@ -134,14 +134,14 @@ l<sub>AD</sub> - Length of the pendulum rod (m)
 9. Once all the sensors and actuators are tested, all the models are combined into a subsystem.
 
 <p align="center">
-<img src="images/sensor_signals_combined_to_a_bus_creator_block.png" height="80%" width="80%">
+<img src="images/sensor_signals_combined_to_a_bus_creator_block.png" height="90%" width="90%">
 </p>
 <p align="center">Figure 13 Sensor signals combined to a bus creator block</p>
 
 10. The sensor data from the subsystem is fed into the PID controller, which gives a signal to rotate the inertia wheel motor for balancing the motorcycle.
 
 <p align="center">
-<img src="images/digital_controller.png" height="80%" width="80%">
+<img src="images/digital_controller.png" height="90%" width="90%">
 </p>
 <p align="center">Figure 14 Digital controller</p>
 
@@ -149,7 +149,7 @@ l<sub>AD</sub> - Length of the pendulum rod (m)
 12. The Digital Controller block has safety logic that checks the IMU calibration status, battery level, and standing or falling state of the motorcycle. If any of the above conditions fail, then the controller turns off.
 
 <p align="center">
-<img src="images/controller_safety_logic.png" height="90%" width="90%">
+<img src="images/controller_safety_logic.png" height="100%" width="100%">
 </p>
 <p align="center">Figure 15 Controller safety logic</p>
 
