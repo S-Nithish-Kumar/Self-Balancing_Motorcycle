@@ -49,7 +49,7 @@
 </p>
 <p align="center">Figure 2 State vector derivative</p>
 
-<p align="left">
+<p align="left" text-indent="50px">
 ẋ(t) - Derivative of state vector <br>
 θ - Lean angle of the pendulum (rads) <br>
 Theta dot - Angular velocity (rad/s) <br>
@@ -58,9 +58,9 @@ Theta dot dot -  Angular acceleration (rad/s2) <br>
 Omega dot - Rotational acceleration of the inertia wheel (rad/s<sup>2</sup>) <br>
 m<sub>r</sub> - Mass of pendulum rod (kg) <br>
 m<sub>w</sub> - Mass of inertia wheel (kg) <br>
-l<sub>AB</sub> - Distance from ground to the center of mass of the pendulum rod (m) <br>
-l<sub>AC</sub> - Distance from ground to the center of mass of the inertia wheel (m) <br>
-l<sub>AD</sub> - Length of the pendulum rod (m) <br>
+_l_<sub>AB</sub> - Distance from ground to the center of mass of the pendulum rod (m) <br>
+_l_<sub>AC</sub> - Distance from ground to the center of mass of the inertia wheel (m) <br>
+_l_<sub>AD</sub> - Length of the pendulum rod (m) <br>
 𝜏<sub>m</sub> - Motor torque (Nm) <br>
 </p>
 
