@@ -95,6 +95,7 @@ _l_<sub>AD</sub> - Length of the pendulum rod (m) <br>
 <p align="center">Figure 7 Pendulum output with PID controller</p>
 
 **_Step 3:_** The motorcycle is assembled, and each of the above-mentioned sensors is tested by developing models with Simulink for each sensor, and the models are run in External mode.
+
 **_Step 4:_** First, the IMU is tested by running the model in External mode. Simulink has a prebuilt function block for the BNO055 IMU sensor that shows the angular rate, euler angles, and calibration status of the sensor, as seen in Figure . The sensor has to be calibrated every time the controller is powered on.
 
 <p align="center">
@@ -153,6 +154,7 @@ _l_<sub>AD</sub> - Length of the pendulum rod (m) <br>
 <p align="center">Figure 15 Controller safety logic</p>
 
 **_Step 13:_** The rear motor speed is increased slowly using a slider to move the motorcycle.
+
 **_Step 14:_** Then the steering angle of the motorcycle is slightly changed, and the rear motor speed is slowly increased to make the motorcycle move in a circular path.
 
 ### 6. Problems and Troubleshooting:
